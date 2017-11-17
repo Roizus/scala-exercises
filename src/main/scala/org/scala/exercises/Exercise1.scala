@@ -17,7 +17,22 @@
 package org.scala.exercises
 
 object Exercise1 {
-
+  def main(args: Array[String]) : Unit = {
+    val l = List(1, 2, 3, 4, 5)
+    val obj = new Exercise1
+    val r1 = obj.processList[Int, Int](l, obj.square)
+    val r2 = obj.processList[Int, String](l, obj.transformToString)
+    val r3 = obj.processList2[Int, Int](l, obj.square)
+    val r4 = obj.processList2[Int, String](l, obj.transformToString)
+    val r5 = obj.processListMaikMongo[Int, Int](l, obj.square)
+    val r6 = obj.processListMaikMongo[Int, String](l, obj.transformToString)
+    println(r1)
+    println(r2)
+    println(r3)
+    println(r4)
+    println(r5)
+    println(r6)
+  }
 }
 
 /**
@@ -25,6 +40,26 @@ object Exercise1 {
  */
 class Exercise1 {
 
+  def transformToString(x: Int): String = {x.toString}
 
+  def square(x:Int): Int = {x * x}
 
-}
+  def processList[A, B](l: List[A], op: A => B) ={
+      l.foldLeft(Map.empty[A, B])((acc ,cur) => {acc + (cur -> op(cur))})
+    }
+
+  def processList2[A, B](l: List[A], op: A => B): Map[A, B] ={
+    var map : Map[A, B]= Map.empty
+    for (x <- l){
+      map += (x -> op(x))
+    }
+    map
+  }
+
+  def processListMaikMongo[A, B](l: List[A], op: A => B): Map[A, B] ={
+    var map : Map[A, B]= Map.empty
+    l.foreach(x => map += (x -> op(x)))
+    map
+  }
+  }
+
